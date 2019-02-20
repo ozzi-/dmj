@@ -17,11 +17,11 @@ public class Settings {
 
 	public static void handleExitCode(boolean mailsFound, boolean foundAccount) {
 		if (!foundAccount) {
-			System.out.println("Could not find account in config json");
+			System.out.println(Settings.indentMarker+" Could not find account in config json");
 			System.exit(1);
 		}
 		if (!mailsFound) {
-			System.out.println("No mails with containing keyword in subject found");
+			System.out.println(Settings.indentMarker+" No mails with containing keyword in subject found");
 			System.exit(2);
 		}
 		System.exit(0);
