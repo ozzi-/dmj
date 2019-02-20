@@ -1,5 +1,7 @@
 package mail;
 
+import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Properties;
 
@@ -22,6 +24,23 @@ import model.MailAccount;
 import model.Settings;
 
 public class Mailer {
+	
+	public static boolean handleMailsReceived(String emailSubjectContains, String dumpPath, ArrayList<Mail> mailsReceived, boolean deleteAfterDump, MailAccount mailAccount)
+			throws FileNotFoundException, UnsupportedEncodingException {
+		ArrayList<String> dumpedMailSubjects = new ArrayList<String>();
+		boolean mailsFound = false;
+		for (Mail mail : mailsReceived) {
+			if (mail.getSubject().contains(emailSubjectContains)) {
+				mailsFound = true;
+				mail.dumpMail(dumpPath);
+				dumpedMailSubjects.add(mail.getSubject());
+			}
+		}
+		if (deleteAfterDump) {
+			Mailer.deleteMessagesBySubjectIMAP(mailAccount, dumpedMailSubjects);
+		}
+		return mailsFound;
+	}
 
 	private static Store connectIMAP(String imapHost, int imapPort, boolean imapSecure, boolean trustAllCertificates,
 			String imapUser, String imapPassword) {

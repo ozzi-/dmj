@@ -1,7 +1,15 @@
 package model;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+
+import mail.Mailer;
 
 public class Mail {
 	private String from;
@@ -10,7 +18,7 @@ public class Mail {
 	private String content;
 	private String contentHTML;
 	private Date sentDate;
-	
+
 	public Mail(String from, String to, String subject, String content, String contentHTML, Date sentDate) {
 		this.setFrom(from);
 		this.setTo(to);
@@ -19,10 +27,27 @@ public class Mail {
 		this.setContentHTML(contentHTML);
 		this.setSentDate(sentDate);
 	}
-	
+
+	public void dumpMail(String dumpPath) throws FileNotFoundException, UnsupportedEncodingException {
+		String path = dumpPath + "/" + this.getFilenameString() + ".mail";
+		System.out.println(Settings.indentMarker + " '" + this.getSubject() + "' writing to " + path);
+		File file = new File(path);
+		file.getParentFile().mkdirs();
+		PrintWriter writer = new PrintWriter(file, "UTF-8");
+		writer.println("FROM: " + this.getFrom());
+		writer.println("TO: " + this.getTo());
+		writer.println("SUBJECT: " + this.getSubject());
+		writer.println("SENT: " + this.getSentDate());
+		writer.println("CONTENT:");
+		writer.println(this.getContent());
+		writer.println("CONTENT HTML:");
+		writer.print(this.getContentHTML());
+		writer.close();
+	}
+
 	public String getFilenameString() {
-	    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_hh-mm-ss");  
-	    return dateFormat.format(sentDate);  
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_hh-mm-ss");
+		return dateFormat.format(sentDate);
 	}
 
 	public String getFrom() {
