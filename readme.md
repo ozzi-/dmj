@@ -1,3 +1,14 @@
+# dmj - dump mail java
+Ever needed a easy way to access information in mailboxes programatically / in your script?
+This tool will enable you to search for a specific keyword in the subjects of mails in a inbox.
+If the keyword is present in a subject, said mail will be dumped to the filesystem.
+
+Features:
+- Ability to pre-configure multiple mail accounts
+- Ability to delete mails in the mailbox after dumping them locally
+- Support for HTML in the dump files
+
+
 ## Usage
 ```
 {/path/to/config.json} {accountName} {emailSubjectContains} {/path/for/dump} {deleteAfterDump}
